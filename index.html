@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Jamonterapia — Servicio de corte de jamón ibérico de élite. 25 años al servicio de los eventos más exclusivos de España.">
+  <title>Jamonterapia — El Arte del Corte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET & TOKENS ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black:       #0A0A0A;
+      --black-mid:   #0F0F0F;
+      --black-card:  #141414;
+      --charcoal:    #1A1A1A;
+      --gold:        #C9A86A;
+      --gold-light:  #E0C589;
+      --cream:       #EDE4D3;
+      --offwhite:    #F5F2EC;
+      --white:       #ffffff;
+      --wa-green:    #25D366;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--offwhite);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; display: block; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ===== UTILITIES ===== */
+    .section-pad { padding: 8rem 2rem; }
+
+    .inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .sec-title {
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      letter-spacing: 0.08em;
+      text-align: center;
+      color: var(--gold);
+    }
+    .sec-title.dark { color: var(--charcoal); }
+
+    .ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1.6rem auto;
+      max-width: 320px;
+    }
+    .ornament::before, .ornament::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gold);
+    }
+    .ornament span { color: var(--gold); font-size: 0.95rem; line-height: 1; }
+    .ornament.left { justify-content: flex-start; max-width: 220px; margin-left: 0; }
+
+    /* Scroll animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* Stagger helpers */
+    .d1 { transition-delay: 0.12s; }
+    .d2 { transition-delay: 0.24s; }
+    .d3 { transition-delay: 0.36s; }
+    .d4 { transition-delay: 0.48s; }
+
+    /* ===== NAVIGATION ===== */
+    #nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    #nav.scrolled {
+      background: rgba(0,0,0,0.95);
+      border-color: var(--gold);
+    }
+
+    .nav-logo img { height: 46px; width: auto; object-fit: contain; }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2.4rem;
+    }
+    .nav-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 0.74rem;
+      font-variant: small-caps;
+      letter-spacing: 0.12em;
+      color: var(--offwhite);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span { display: block; width: 26px; height: 2px; background: var(--gold); transition: all 0.3s; }
+
+    /* Mobile overlay */
+    #mob-nav {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.97);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s;
+    }
+    #mob-nav.open { opacity: 1; pointer-events: all; }
+    #mob-close {
+      position: absolute;
+      top: 1.4rem; right: 2rem;
+      background: none; border: none;
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .mob-links { list-style: none; text-align: center; }
+    .mob-links li { margin: 1.4rem 0; }
+    .mob-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 1.7rem;
+      font-variant: small-caps;
+      letter-spacing: 0.1em;
+      color: var(--offwhite);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .mob-links a:hover { color: var(--gold); }
+
+    /* ===== HERO ===== */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 620px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, #2a1a0e 0%, #0a0a0a 70%);
+      z-index: 0;
+    }
+
+    #hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 2;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      padding: 0 2rem;
+      max-width: 940px;
+    }
+
+    .hero-h1 {
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: clamp(2.2rem, 5vw, 5rem);
+      letter-spacing: 0.08em;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-sub {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--gold);
+      margin-bottom: 3rem;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1.4rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-gold {
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: var(--black);
+      border: 2px solid var(--gold);
+      padding: 1rem 2.6rem;
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+    .btn-gold:hover {
+      background: var(--gold-light);
+      border-color: var(--gold-light);
+      box-shadow: 0 0 22px rgba(201,168,106,0.55);
+    }
+
+    .btn-outline {
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: transparent;
+      color: var(--white);
+      border: 2px solid var(--gold);
+      padding: 1rem 2.6rem;
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+    .btn-outline:hover { background: var(--gold); color: var(--black); }
+
+    /* Scroll chevron */
+    .scroll-ind {
+      position: absolute;
+      bottom: 5.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .chev {
+      width: 14px; height: 14px;
+      border-right: 2px solid var(--gold);
+      border-bottom: 2px solid var(--gold);
+      transform: rotate(45deg);
+      animation: chev-bounce 1.8s ease-in-out infinite;
+    }
+    .chev:nth-child(2) { animation-delay: 0.18s; opacity: 0.65; }
+    .chev:nth-child(3) { animation-delay: 0.36s; opacity: 0.35; }
+    @keyframes chev-bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(6px); }
+    }
+
+    /* Marquee */
+    .marquee-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 3;
+      background: rgba(4,4,4,0.88);
+      border-top: 1px solid rgba(201,168,106,0.25);
+      padding: 0.8rem 0;
+      overflow: hidden;
+    }
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: marquee 32s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    .marquee-chunk {
+      display: inline-flex;
+      align-items: center;
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      color: var(--gold);
+      padding-right: 0;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ===== SECTION INTRO (Logo) ===== */
+    #intro {
+      height: 100vh;
+      min-height: 600px;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+    }
+
+    .intro-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.8rem;
+    }
+
+    #intro-logo {
+      width: 100%;
+      max-width: 280px;
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 1.4s ease-out, transform 1.4s ease-out;
+    }
+    #intro-logo.in { opacity: 1; transform: scale(1); }
+
+    #intro-tag {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      color: var(--gold);
+      font-size: 1.35rem;
+      letter-spacing: 0.16em;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 1.2s ease-out 0.45s, transform 1.2s ease-out 0.45s;
+    }
+    #intro-tag.in { opacity: 1; transform: none; }
+
+    /* ===== SECTION 2 — PROPUESTA DE VALOR ===== */
+    #propuesta {
+      background: var(--black-mid);
+      border-top: 1px solid var(--gold);
+      border-bottom: 1px solid var(--gold);
+      padding: 7rem 2rem;
+    }
+
+    .prop-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 4rem;
+    }
+
+    .prop-item { text-align: center; }
+
+    .prop-sym {
+      font-size: 1.7rem;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 1.1rem;
+    }
+
+    .prop-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      margin-bottom: 0.9rem;
+    }
+
+    .prop-desc {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.05rem;
+      color: var(--offwhite);
+      line-height: 1.8;
+    }
+
+    /* ===== SECTION 3 — EL MAESTRO ===== */
+    #maestro {
+      background: var(--cream);
+      padding: 8rem 2rem;
+    }
+
+    .maestro-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .maestro-img-frame {
+      border: 1px solid var(--gold);
+      padding: 7px;
+      box-shadow: 0 10px 50px rgba(0,0,0,0.18);
+    }
+
+    .maestro-img-frame img {
+      width: 100%;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      display: block;
+    }
+
+    .maestro-text h2 {
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      letter-spacing: 0.05em;
+      color: var(--charcoal);
+    }
+
+    .maestro-text p {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--charcoal);
+      line-height: 1.9;
+      margin-top: 1.4rem;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(201,168,106,0.35);
+    }
+
+    .stat { text-align: center; }
+
+    .stat-num {
+      font-family: 'Cinzel', serif;
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--gold);
+      display: block;
+      line-height: 1;
+    }
+
+    .stat-lbl {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.9rem;
+      color: var(--charcoal);
+      display: block;
+      margin-top: 0.35rem;
+    }
+
+    /* ===== SECTION 4 — SERVICIOS ===== */
+    #servicios {
+      background: var(--black);
+      padding: 8rem 2rem;
+    }
+
+    .srv-grid {
+      max-width: 1000px;
+      margin: 4rem auto 0;
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 2rem;
+    }
+
+    .srv-card {
+      background: var(--black-card);
+      border-top: 2px solid var(--gold);
+      padding: 2.5rem;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .srv-card:hover {
+      box-shadow: 0 8px 32px rgba(201,168,106,0.2);
+      transform: translateY(-4px);
+    }
+
+    .srv-sym {
+      font-size: 1.4rem;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .srv-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      letter-spacing: 0.07em;
+      color: var(--gold);
+      margin-bottom: 0.9rem;
+    }
+
+    .srv-desc {
+      font-family: 'EB Garamond', serif;
+      font-size: 1rem;
+      color: var(--offwhite);
+      line-height: 1.75;
+    }
+
+    /* ===== SECTION 5 — CULTURA DEL JAMÓN ===== */
+    #cultura {
+      background: var(--cream);
+      padding: 8rem 2rem;
+    }
+
+    .cult-sub {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      text-align: center;
+      color: var(--charcoal);
+      font-size: 1.2rem;
+      margin-top: 0.8rem;
+    }
+
+    .accordion {
+      max-width: 820px;
+      margin: 4rem auto 0;
+    }
+
+    .acc-item {
+      border: 1px solid var(--gold);
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .acc-hdr {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      color: var(--charcoal);
+      letter-spacing: 0.06em;
+      padding: 1.35rem 1.8rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      transition: background 0.25s;
+    }
+    .acc-hdr:hover { background: rgba(201,168,106,0.07); }
+
+    .acc-arrow {
+      color: var(--gold);
+      font-size: 1.2rem;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+      margin-left: 1rem;
+    }
+    .acc-item.open .acc-arrow { transform: rotate(180deg); }
+
+    .acc-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out;
+    }
+    .acc-item.open .acc-body { max-height: 260px; }
+
+    .acc-inner {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.05rem;
+      color: var(--charcoal);
+      line-height: 1.85;
+      padding: 0 1.8rem 1.5rem;
+    }
+
+    /* ===== SECTION 6 — GALERÍA ===== */
+    #galeria {
+      background: var(--black);
+      padding: 8rem 0 8rem;
+    }
+
+    .galeria-head {
+      padding: 0 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .gallery-grid {
+      columns: 3 300px;
+      column-gap: 0.8rem;
+      max-width: 1200px;
+      margin: 3.5rem auto 0;
+      padding: 0 2rem;
+    }
+
+    .gal-item {
+      break-inside: avoid;
+      margin-bottom: 0.8rem;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .gal-item img {
+      width: 100%;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .gal-item:hover img { transform: scale(1.05); }
+
+    /* Lightbox */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.96);
+      z-index: 5000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    #lightbox.open { opacity: 1; pointer-events: all; }
+
+    #lb-img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border: 1px solid rgba(201,168,106,0.25);
+    }
+
+    #lb-close {
+      position: absolute;
+      top: 1.4rem; right: 2rem;
+      background: none; border: none;
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 2.2rem;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 5001;
+      transition: color 0.2s;
+    }
+    #lb-close:hover { color: var(--gold-light); }
+
+    /* ===== SECTION 7 — PRESENCIA DE ÉLITE ===== */
+    #presencia {
+      background: var(--cream);
+      padding: 8rem 2rem;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      max-width: 880px;
+      margin: 3.5rem auto 0;
+    }
+
+    .badge {
+      background: var(--charcoal);
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      border-radius: 2px;
+      padding: 0.65rem 1.5rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      font-variant: small-caps;
+    }
+
+    .pres-quote {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+      color: var(--charcoal);
+      text-align: center;
+      max-width: 740px;
+      margin: 4rem auto 0;
+      line-height: 1.55;
+    }
+
+    /* ===== SECTION 8 — CONTACTO ===== */
+    #contacto {
+      background: var(--black);
+      padding: 8rem 2rem;
+    }
+
+    .cont-sub {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      text-align: center;
+      color: var(--offwhite);
+      font-size: 1.15rem;
+      margin-top: 0.8rem;
+    }
+
+    .form-wrap {
+      max-width: 640px;
+      margin: 4rem auto 0;
+    }
+
+    .fg { margin-bottom: 1.5rem; }
+
+    .fg label {
+      display: block;
+      font-family: 'EB Garamond', serif;
+      font-size: 0.9rem;
+      color: var(--offwhite);
+      margin-bottom: 0.45rem;
+      letter-spacing: 0.04em;
+    }
+
+    .fg input,
+    .fg select,
+    .fg textarea {
+      width: 100%;
+      background: var(--black-card);
+      border: 1px solid var(--gold);
+      color: var(--offwhite);
+      padding: 0.9rem 1.1rem;
+      font-family: 'EB Garamond', serif;
+      font-size: 1rem;
+      outline: none;
+      border-radius: 0;
+      -webkit-appearance: none;
+      appearance: none;
+      transition: box-shadow 0.3s, border-color 0.3s;
+    }
+
+    .fg input::placeholder,
+    .fg textarea::placeholder { color: rgba(245,242,236,0.35); }
+
+    .fg input:focus,
+    .fg select:focus,
+    .fg textarea:focus {
+      box-shadow: 0 0 10px rgba(201,168,106,0.35);
+      border-color: var(--gold-light);
+    }
+
+    .fg input.err,
+    .fg select.err,
+    .fg textarea.err {
+      border-color: #c0392b;
+      box-shadow: 0 0 8px rgba(192,57,43,0.3);
+    }
+
+    .fg select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A86A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+    .fg select option { background: var(--black-card); color: var(--offwhite); }
+
+    .fg textarea { min-height: 130px; resize: vertical; }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(0.75) sepia(0.6) saturate(2);
+      cursor: pointer;
+      opacity: 0.8;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      padding: 1.1rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.88rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 0.4rem;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .btn-submit:hover {
+      background: var(--gold-light);
+      box-shadow: 0 4px 22px rgba(201,168,106,0.4);
+    }
+
+    .form-ok {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      margin-top: 1.5rem;
+    }
+    .form-ok.show { display: block; }
+
+    .wa-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      background: var(--wa-green);
+      color: #fff;
+      text-decoration: none;
+      padding: 1rem 2rem;
+      border-radius: 4px;
+      font-family: 'EB Garamond', serif;
+      font-size: 1.1rem;
+      max-width: 360px;
+      margin: 2.5rem auto 0;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .wa-btn:hover {
+      background: #1fc458;
+      box-shadow: 0 4px 22px rgba(37,211,102,0.35);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #000;
+      border-top: 1px solid var(--gold);
+      padding: 3.5rem 2rem;
+      text-align: center;
+    }
+
+    .ft-logo { width: 160px; margin: 0 auto 1.4rem; }
+
+    .ft-tag {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      color: var(--gold);
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.7rem;
+    }
+
+    .ft-copy {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.82rem;
+      color: var(--offwhite);
+      opacity: 0.5;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .prop-grid { gap: 2.5rem; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .prop-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .maestro-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .stats-row { justify-content: center; }
+      .srv-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+      .gallery-grid { columns: 2 200px; }
+      .badges { gap: 0.6rem; }
+      .pres-quote { font-size: 1.3rem; }
+      .wa-btn { max-width: 100%; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-ctas { flex-direction: column; align-items: center; }
+      .btn-gold, .btn-outline { width: 280px; text-align: center; }
+      .gallery-grid { columns: 1; }
+      .section-pad { padding: 5rem 1.5rem; }
+    }
+
+    @media (min-width: 1280px) {
+      .gallery-grid { columns: 4 260px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== NAVBAR ====== -->
+  <nav id="nav">
+    <a href="#hero" class="nav-logo">
+      <img src="logo.png" alt="Jamonterapia">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#hero">Inicio</a></li>
+      <li><a href="#maestro">El Maestro</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile nav overlay -->
+  <div id="mob-nav">
+    <button id="mob-close">✕</button>
+    <ul class="mob-links">
+      <li><a href="#hero"     class="mob-a">Inicio</a></li>
+      <li><a href="#maestro"  class="mob-a">El Maestro</a></li>
+      <li><a href="#servicios" class="mob-a">Servicios</a></li>
+      <li><a href="#galeria"  class="mob-a">Galería</a></li>
+      <li><a href="#contacto" class="mob-a">Contacto</a></li>
+    </ul>
+  </div>
+
+  <!-- ====== HERO ====== -->
+  <section id="hero">
+    <video id="hero-video" autoplay muted loop playsinline>
+      <source src="hero.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <h1 class="hero-h1">El arte del corte,<br>elevado a experiencia</h1>
+      <p class="hero-sub">25 años de maestría al servicio de los eventos más exclusivos</p>
+      <div class="hero-ctas">
+        <a href="#contacto" class="btn-gold">Solicita Presupuesto</a>
+        <a href="#servicios" class="btn-outline">Ver Servicios</a>
+      </div>
+    </div>
+
+    <div class="scroll-ind">
+      <div class="chev"></div>
+      <div class="chev"></div>
+      <div class="chev"></div>
+    </div>
+
+    <div class="marquee-bar">
+      <div class="marquee-track">
+        <span class="marquee-chunk">&nbsp;&nbsp;✦ Camp Nou · FC Barcelona &nbsp;&nbsp;&nbsp; ✦ Mobile World Congress &nbsp;&nbsp;&nbsp; ✦ PortAventura &nbsp;&nbsp;&nbsp; ✦ Torneos de Golf Mercedes &nbsp;&nbsp;&nbsp; ✦ Ferias Gastronómicas de Élite &nbsp;&nbsp;&nbsp;</span>
+        <span class="marquee-chunk">&nbsp;&nbsp;✦ Camp Nou · FC Barcelona &nbsp;&nbsp;&nbsp; ✦ Mobile World Congress &nbsp;&nbsp;&nbsp; ✦ PortAventura &nbsp;&nbsp;&nbsp; ✦ Torneos de Golf Mercedes &nbsp;&nbsp;&nbsp; ✦ Ferias Gastronómicas de Élite &nbsp;&nbsp;&nbsp;</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== INTRO — LOGO SECTION ====== -->
+  <section id="intro">
+    <div class="intro-wrap">
+      <img id="intro-logo" src="logo.png" alt="Jamonterapia — El Arte del Corte">
+      <div class="ornament" id="intro-orn" style="opacity:0;transition:opacity 1.2s ease-out 0.6s">
+        <span>✦</span>
+      </div>
+      <p id="intro-tag">El arte del corte, elevado a experiencia</p>
+    </div>
+  </section>
+
+  <!-- ====== SECTION 2 — PROPUESTA DE VALOR ====== -->
+  <section id="propuesta">
+    <div class="prop-grid">
+      <div class="prop-item reveal">
+        <span class="prop-sym">✦</span>
+        <h3 class="prop-title">Maestría</h3>
+        <p class="prop-desc">25 años perfeccionando cada corte hasta la excelencia</p>
+      </div>
+      <div class="prop-item reveal d1">
+        <span class="prop-sym">✦</span>
+        <h3 class="prop-title">Exclusividad</h3>
+        <p class="prop-desc">Presente en los eventos más selectos de España</p>
+      </div>
+      <div class="prop-item reveal d2">
+        <span class="prop-sym">✦</span>
+        <h3 class="prop-title">Experiencia Sensorial</h3>
+        <p class="prop-desc">Cada loncha, una obra de arte para el paladar</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SECTION 3 — EL MAESTRO ====== -->
+  <section id="maestro">
+    <div class="maestro-inner">
+      <div class="maestro-img-frame reveal">
+        <img src="1.jpeg" alt="El Maestro Cortador — Jamonterapia" loading="lazy">
+      </div>
+      <div class="maestro-text reveal d1">
+        <h2>El Maestro Cortador</h2>
+        <div class="ornament left"><span>✦</span></div>
+        <p>Con más de 25 años dedicados al arte del corte ibérico, ha llevado la experiencia del jamón a los escenarios más prestigiosos de España. Cortador en el palco VIP del Camp Nou para el Fútbol Club Barcelona, presente en el Mobile World Congress, en PortAventura, en torneos de golf patrocinados por Mercedes, y en las ferias gastronómicas más reconocidas del país. Cada evento es una actuación. Cada loncha, una firma.</p>
+        <div class="stats-row">
+          <div class="stat">
+            <span class="stat-num" data-target="25" data-prefix="+">+25</span>
+            <span class="stat-lbl">Años</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-target="500" data-prefix="+">+500</span>
+            <span class="stat-lbl">Eventos</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" style="font-size:1.4rem;line-height:1.3">Miles&nbsp;de</span>
+            <span class="stat-lbl">Lonchas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SECTION 4 — SERVICIOS ====== -->
+  <section id="servicios" class="section-pad">
+    <div class="inner">
+      <h2 class="sec-title reveal">Nuestros Servicios</h2>
+      <div class="ornament reveal d1"><span>✦</span></div>
+      <div class="srv-grid">
+        <div class="srv-card reveal">
+          <span class="srv-sym">✦</span>
+          <h3 class="srv-title">Eventos Privados</h3>
+          <p class="srv-desc">Bodas, celebraciones y reuniones exclusivas con el sello de calidad Jamonterapia</p>
+        </div>
+        <div class="srv-card reveal d1">
+          <span class="srv-sym">✦</span>
+          <h3 class="srv-title">Eventos Corporativos</h3>
+          <p class="srv-desc">Palcos VIP, presentaciones de empresa y eventos de networking al más alto nivel</p>
+        </div>
+        <div class="srv-card reveal d2">
+          <span class="srv-sym">✦</span>
+          <h3 class="srv-title">Catas &amp; Experiencias</h3>
+          <p class="srv-desc">Una inmersión sensorial en el mundo del jamón ibérico de bellota</p>
+        </div>
+        <div class="srv-card reveal d3">
+          <span class="srv-sym">✦</span>
+          <h3 class="srv-title">Formación en Corte</h3>
+          <p class="srv-desc">Aprende la técnica de un maestro con 25 años de experiencia</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SECTION 5 — CULTURA DEL JAMÓN ====== -->
+  <section id="cultura" class="section-pad">
+    <div class="inner">
+      <h2 class="sec-title dark reveal">El Conocimiento del Maestro</h2>
+      <p class="cult-sub reveal d1">El jamón ibérico no es solo un alimento. Es geografía, tiempo y técnica.</p>
+
+      <div class="accordion">
+        <div class="acc-item reveal">
+          <div class="acc-hdr">
+            <span>Las Partes del Jamón</span>
+            <span class="acc-arrow">▾</span>
+          </div>
+          <div class="acc-body">
+            <div class="acc-inner">Cada zona tiene su personalidad: la maza, la contramaza, el jarrete y la punta ofrecen sabores y texturas únicos. Conocerlas es el primer paso para cortarlas con maestría.</div>
+          </div>
+        </div>
+        <div class="acc-item reveal d1">
+          <div class="acc-hdr">
+            <span>Los Sabores Según la Zona</span>
+            <span class="acc-arrow">▾</span>
+          </div>
+          <div class="acc-body">
+            <div class="acc-inner">La maza es la parte más jugosa y generosa en grasa infiltrada. La contramaza ofrece un sabor más intenso y curado. El jarrete concentra aromas profundos. La punta, firme y potente, es el bocado más animal del jamón.</div>
+          </div>
+        </div>
+        <div class="acc-item reveal d2">
+          <div class="acc-hdr">
+            <span>El Arte del Corte</span>
+            <span class="acc-arrow">▾</span>
+          </div>
+          <div class="acc-body">
+            <div class="acc-inner">El corte no es solo separar lonchas. Es liberar los aromas, respetar la fibra muscular, conseguir la transparencia exacta. Un maestro cortador transforma un jamón en una experiencia inolvidable.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SECTION 6 — GALERÍA ====== -->
+  <section id="galeria">
+    <div class="galeria-head">
+      <h2 class="sec-title reveal">Momentos de Élite</h2>
+      <div class="ornament reveal d1"><span>✦</span></div>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gal-item" data-src="1.jpeg"><img src="1.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="2.jpeg"><img src="2.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="3.jpeg"><img src="3.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="3.1.jpeg"><img src="3.1.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="4.jpeg"><img src="4.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="5.jpeg"><img src="5.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="5.1.jpeg"><img src="5.1.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="5.1.1.jpeg"><img src="5.1.1.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="5.1.2.jpeg"><img src="5.1.2.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="5.1.3.jpeg"><img src="5.1.3.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="5.2.jpeg"><img src="5.2.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="5.3.jpeg"><img src="5.3.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="5.4.jpeg"><img src="5.4.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="5.5.jpeg"><img src="5.5.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="5.6.jpeg"><img src="5.6.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="5.7.jpeg"><img src="5.7.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="5.8.jpeg"><img src="5.8.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="5.9.jpeg"><img src="5.9.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="6.jpeg"><img src="6.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="7.jpeg"><img src="7.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="7.1.jpeg"><img src="7.1.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="7.2.jpeg"><img src="7.2.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="8.jpeg"><img src="8.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="9.jpeg"><img src="9.jpeg" alt="Jamonterapia" loading="lazy"></div>
+      <div class="gal-item" data-src="WhatsApp%20Image%202026-05-28%20at%2015.05.13%20%282%29.jpeg">
+        <img src="WhatsApp%20Image%202026-05-28%20at%2015.05.13%20%282%29.jpeg" alt="Jamonterapia" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div id="lightbox">
+    <button id="lb-close" aria-label="Cerrar">✕</button>
+    <img id="lb-img" src="" alt="Imagen ampliada">
+  </div>
+
+  <!-- ====== SECTION 7 — PRESENCIA DE ÉLITE ====== -->
+  <section id="presencia" class="section-pad">
+    <div class="inner">
+      <h2 class="sec-title dark reveal">Dónde ha Brillado Jamonterapia</h2>
+      <div class="badges">
+        <span class="badge reveal">Camp Nou</span>
+        <span class="badge reveal d1">FC Barcelona</span>
+        <span class="badge reveal d2">Mobile World Congress</span>
+        <span class="badge reveal d3">PortAventura</span>
+        <span class="badge reveal">Mercedes Golf Tournaments</span>
+        <span class="badge reveal d1">Ferias Gastronómicas Nacionales</span>
+        <span class="badge reveal d2">Eventos Corporativos VIP</span>
+        <span class="badge reveal d3">Celebraciones Privadas de Lujo</span>
+      </div>
+      <p class="pres-quote reveal">
+        "Donde hay excelencia, hay jamón.<br>Donde hay jamón, hay Jamonterapia."
+      </p>
+    </div>
+  </section>
+
+  <!-- ====== SECTION 8 — CONTACTO ====== -->
+  <section id="contacto" class="section-pad">
+    <div class="inner">
+      <h2 class="sec-title reveal">Reserva tu Experiencia</h2>
+      <p class="cont-sub reveal d1">Cada evento merece lo mejor. Cuéntanos el tuyo.</p>
+
+      <div class="form-wrap">
+        <form id="contact-form" novalidate>
+          <div class="fg reveal">
+            <label for="f-nombre">Nombre completo</label>
+            <input type="text" id="f-nombre" name="nombre" placeholder="Tu nombre completo">
+          </div>
+          <div class="form-row">
+            <div class="fg reveal d1">
+              <label for="f-email">Email</label>
+              <input type="email" id="f-email" name="email" placeholder="tu@email.com">
+            </div>
+            <div class="fg reveal d2">
+              <label for="f-tel">Teléfono</label>
+              <input type="tel" id="f-tel" name="telefono" placeholder="+34 600 000 000">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="fg reveal">
+              <label for="f-tipo">Tipo de evento</label>
+              <select id="f-tipo" name="tipo">
+                <option value="" disabled selected>Selecciona...</option>
+                <option value="privado">Evento Privado</option>
+                <option value="corporativo">Evento Corporativo</option>
+                <option value="cata">Cata &amp; Experiencia</option>
+                <option value="formacion">Formación</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+            <div class="fg reveal d1">
+              <label for="f-fecha">Fecha aproximada</label>
+              <input type="date" id="f-fecha" name="fecha">
+            </div>
+          </div>
+          <div class="fg reveal">
+            <label for="f-msg">Mensaje</label>
+            <textarea id="f-msg" name="mensaje" placeholder="Cuéntanos sobre tu evento..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit reveal">Enviar Solicitud</button>
+        </form>
+        <div class="form-ok" id="form-ok">
+          Gracias. Nos pondremos en contacto contigo en breve.
+        </div>
+
+        <a href="https://wa.me/34600000000" target="_blank" rel="noopener" class="wa-btn reveal">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          Contactar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <img src="logo.png" alt="Jamonterapia" class="ft-logo">
+    <p class="ft-tag">El Arte del Corte · Jamonterapia</p>
+    <p class="ft-copy">© 2026 Jamonterapia. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    /* ===== NAVBAR SCROLL ===== */
+    const nav = document.getElementById('nav');
+    const heroEl = document.getElementById('hero');
+
+    function onScroll() {
+      nav.classList.toggle('scrolled', window.scrollY > heroEl.offsetHeight * 0.5);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    /* ===== ACTIVE NAV LINK ===== */
+    const sections = document.querySelectorAll('section[id]');
+    const navAs = document.querySelectorAll('.nav-links a');
+
+    const secObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navAs.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+        }
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    sections.forEach(s => secObs.observe(s));
+
+    /* ===== MOBILE MENU ===== */
+    const hamburger = document.getElementById('hamburger');
+    const mobNav    = document.getElementById('mob-nav');
+    const mobClose  = document.getElementById('mob-close');
+    const mobLinks  = document.querySelectorAll('.mob-a');
+
+    hamburger.addEventListener('click', () => { mobNav.classList.add('open'); document.body.style.overflow = 'hidden'; });
+
+    function closeMob() { mobNav.classList.remove('open'); document.body.style.overflow = ''; }
+    mobClose.addEventListener('click', closeMob);
+    mobLinks.forEach(a => a.addEventListener('click', closeMob));
+
+    /* ===== SCROLL REVEAL ===== */
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+    /* ===== INTRO LOGO ANIMATION ===== */
+    const introLogo = document.getElementById('intro-logo');
+    const introTag  = document.getElementById('intro-tag');
+    const introOrn  = document.getElementById('intro-orn');
+
+    const introObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          introLogo.classList.add('in');
+          introTag.classList.add('in');
+          introOrn.style.opacity = '1';
+        }
+      });
+    }, { threshold: 0.3 });
+    introObs.observe(introLogo);
+
+    /* ===== STAT COUNTERS ===== */
+    const statEls = document.querySelectorAll('.stat-num[data-target]');
+    let counted = false;
+
+    const countObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !counted) {
+          counted = true;
+          statEls.forEach(el => {
+            const target = +el.dataset.target;
+            const prefix = el.dataset.prefix || '';
+            const duration = 1600;
+            const fps = 60;
+            const increment = target / (duration / (1000 / fps));
+            let cur = 0;
+            const tick = setInterval(() => {
+              cur += increment;
+              if (cur >= target) { cur = target; clearInterval(tick); }
+              el.textContent = prefix + Math.floor(cur);
+            }, 1000 / fps);
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+
+    if (statEls.length) countObs.observe(document.getElementById('maestro'));
+
+    /* ===== ACCORDION ===== */
+    document.querySelectorAll('.acc-hdr').forEach(hdr => {
+      hdr.addEventListener('click', () => {
+        const item = hdr.closest('.acc-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.acc-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+
+    /* ===== LIGHTBOX ===== */
+    const lightbox = document.getElementById('lightbox');
+    const lbImg    = document.getElementById('lb-img');
+    const lbClose  = document.getElementById('lb-close');
+
+    document.querySelectorAll('.gal-item').forEach(item => {
+      item.addEventListener('click', () => {
+        lbImg.src = item.dataset.src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeLb() { lightbox.classList.remove('open'); document.body.style.overflow = ''; setTimeout(() => { lbImg.src = ''; }, 300); }
+    lbClose.addEventListener('click', closeLb);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLb(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+    /* ===== CONTACT FORM ===== */
+    const form   = document.getElementById('contact-form');
+    const formOk = document.getElementById('form-ok');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      let ok = true;
+
+      const rules = [
+        { id: 'f-nombre', test: v => v.trim().length > 1 },
+        { id: 'f-email',  test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+        { id: 'f-tel',    test: v => v.trim().length > 6 },
+        { id: 'f-tipo',   test: v => v !== '' },
+        { id: 'f-msg',    test: v => v.trim().length > 5 },
+      ];
+
+      rules.forEach(({ id, test }) => {
+        const el = document.getElementById(id);
+        if (!test(el.value)) { el.classList.add('err'); ok = false; }
+        else el.classList.remove('err');
+      });
+
+      if (ok) {
+        form.style.display = 'none';
+        formOk.classList.add('show');
+      }
+    });
+
+    form.querySelectorAll('input, select, textarea').forEach(el => {
+      el.addEventListener('input', () => el.classList.remove('err'));
+    });
+  </script>
+</body>
+</html>
