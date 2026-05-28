@@ -191,10 +191,6 @@
       position: relative;
       height: 100vh;
       min-height: 620px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
     }
 
@@ -214,45 +210,77 @@
       z-index: 1;
     }
 
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.55);
-      z-index: 2;
-    }
-
-    .hero-content {
+    /* ===== BRAND INTRO ===== */
+    #brand-intro {
+      background: var(--black);
       position: relative;
-      z-index: 3;
-      text-align: center;
-      padding: 0 2rem;
-      max-width: 940px;
     }
 
-    .hero-h1 {
+    .bi-inner {
+      display: flex;
+      align-items: center;
+      gap: 5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 7.5rem 3rem;
+    }
+
+    .bi-logo { flex-shrink: 0; }
+    .bi-logo img { width: 180px; }
+
+    .bi-content { flex: 1; }
+
+    .bi-h1 {
       font-family: 'Cinzel', serif;
       font-weight: 600;
-      font-size: clamp(2.2rem, 5vw, 5rem);
-      letter-spacing: 0.08em;
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      letter-spacing: 0.07em;
       color: var(--white);
-      line-height: 1.15;
-      margin-bottom: 1.4rem;
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
     }
 
-    .hero-sub {
+    .bi-sub {
       font-family: 'EB Garamond', serif;
       font-style: italic;
-      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
       color: var(--gold);
-      margin-bottom: 3rem;
+      margin-bottom: 2.5rem;
       letter-spacing: 0.04em;
     }
 
-    .hero-ctas {
+    .bi-ctas {
       display: flex;
       gap: 1.4rem;
-      justify-content: center;
       flex-wrap: wrap;
+    }
+
+    .marquee-strip {
+      background: rgba(4,4,4,0.9);
+      border-top: 1px solid rgba(201,168,106,0.25);
+      padding: 0.8rem 0;
+      overflow: hidden;
+    }
+
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: marquee 32s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    .marquee-chunk {
+      display: inline-flex;
+      align-items: center;
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      color: var(--gold);
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
     .btn-gold {
@@ -290,142 +318,6 @@
       transition: background 0.3s, color 0.3s;
     }
     .btn-outline:hover { background: var(--gold); color: var(--black); }
-
-    /* Scroll chevron */
-    .scroll-ind {
-      position: absolute;
-      bottom: 5.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 3;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-    .chev {
-      width: 14px; height: 14px;
-      border-right: 2px solid var(--gold);
-      border-bottom: 2px solid var(--gold);
-      transform: rotate(45deg);
-      animation: chev-bounce 1.8s ease-in-out infinite;
-    }
-    .chev:nth-child(2) { animation-delay: 0.18s; opacity: 0.65; }
-    .chev:nth-child(3) { animation-delay: 0.36s; opacity: 0.35; }
-    @keyframes chev-bounce {
-      0%, 100% { transform: rotate(45deg) translateY(0); }
-      50% { transform: rotate(45deg) translateY(6px); }
-    }
-
-    /* Marquee */
-    .marquee-bar {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      z-index: 3;
-      background: rgba(4,4,4,0.88);
-      border-top: 1px solid rgba(201,168,106,0.25);
-      padding: 0.8rem 0;
-      overflow: hidden;
-    }
-    .marquee-track {
-      display: flex;
-      white-space: nowrap;
-      animation: marquee 32s linear infinite;
-    }
-    .marquee-track:hover { animation-play-state: paused; }
-    .marquee-chunk {
-      display: inline-flex;
-      align-items: center;
-      font-family: 'Cinzel', serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.16em;
-      color: var(--gold);
-      padding-right: 0;
-    }
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* ===== SECTION INTRO (Logo) ===== */
-    #intro {
-      height: 100vh;
-      min-height: 600px;
-      background: var(--black);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 4rem 2rem;
-    }
-
-    .intro-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.8rem;
-    }
-
-    #intro-logo {
-      width: 100%;
-      max-width: 280px;
-      opacity: 0;
-      transform: scale(0.95);
-      transition: opacity 1.4s ease-out, transform 1.4s ease-out;
-    }
-    #intro-logo.in { opacity: 1; transform: scale(1); }
-
-    #intro-tag {
-      font-family: 'EB Garamond', serif;
-      font-style: italic;
-      color: var(--gold);
-      font-size: 1.35rem;
-      letter-spacing: 0.16em;
-      text-align: center;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 1.2s ease-out 0.45s, transform 1.2s ease-out 0.45s;
-    }
-    #intro-tag.in { opacity: 1; transform: none; }
-
-    /* ===== SECTION 2 — PROPUESTA DE VALOR ===== */
-    #propuesta {
-      background: var(--black-mid);
-      border-top: 1px solid var(--gold);
-      border-bottom: 1px solid var(--gold);
-      padding: 7rem 2rem;
-    }
-
-    .prop-grid {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 4rem;
-    }
-
-    .prop-item { text-align: center; }
-
-    .prop-sym {
-      font-size: 1.7rem;
-      color: var(--gold);
-      display: block;
-      margin-bottom: 1.1rem;
-    }
-
-    .prop-title {
-      font-family: 'Cinzel', serif;
-      font-size: 1.05rem;
-      letter-spacing: 0.08em;
-      color: var(--gold);
-      margin-bottom: 0.9rem;
-    }
-
-    .prop-desc {
-      font-family: 'EB Garamond', serif;
-      font-size: 1.05rem;
-      color: var(--offwhite);
-      line-height: 1.8;
-    }
 
     /* ===== SECTION 3 — EL MAESTRO ===== */
     #maestro {
@@ -501,48 +393,54 @@
     /* ===== SECTION 4 — SERVICIOS ===== */
     #servicios {
       background: var(--black);
-      padding: 8rem 2rem;
+      padding: 8rem 0;
     }
 
-    .srv-grid {
-      max-width: 1000px;
-      margin: 4rem auto 0;
-      display: grid;
-      grid-template-columns: repeat(2,1fr);
-      gap: 2rem;
+    .srv-rows {
+      margin-top: 4rem;
     }
 
-    .srv-card {
+    .srv-row {
+      display: flex;
+      min-height: 420px;
+    }
+
+    .srv-video-wrap {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .srv-video-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .srv-info {
+      flex: 1;
       background: var(--black-card);
       border-top: 2px solid var(--gold);
-      padding: 2.5rem;
-      transition: box-shadow 0.3s, transform 0.3s;
-    }
-    .srv-card:hover {
-      box-shadow: 0 8px 32px rgba(201,168,106,0.2);
-      transform: translateY(-4px);
-    }
-
-    .srv-sym {
-      font-size: 1.4rem;
-      color: var(--gold);
-      display: block;
-      margin-bottom: 1rem;
+      padding: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .srv-title {
       font-family: 'Cinzel', serif;
-      font-size: 1rem;
+      font-size: 1.4rem;
       letter-spacing: 0.07em;
       color: var(--gold);
-      margin-bottom: 0.9rem;
+      margin-bottom: 1.2rem;
     }
 
     .srv-desc {
       font-family: 'EB Garamond', serif;
-      font-size: 1rem;
+      font-size: 1.1rem;
       color: var(--offwhite);
-      line-height: 1.75;
+      line-height: 1.8;
     }
 
     /* ===== SECTION 5 — CULTURA DEL JAMÓN ===== */
@@ -887,18 +785,17 @@
     }
 
     /* ===== RESPONSIVE ===== */
-    @media (max-width: 1024px) {
-      .prop-grid { gap: 2.5rem; }
-    }
-
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .hamburger { display: flex; }
 
-      .prop-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .bi-inner { flex-direction: column; padding: 3.75rem 2rem; gap: 2.5rem; text-align: center; }
+      .bi-ctas { justify-content: center; }
       .maestro-inner { grid-template-columns: 1fr; gap: 3rem; }
       .stats-row { justify-content: center; }
-      .srv-grid { grid-template-columns: 1fr; }
+      .srv-row { flex-direction: column; min-height: auto; }
+      .srv-video-wrap { min-height: 280px; }
+      .srv-info { padding: 2.5rem; }
       .form-row { grid-template-columns: 1fr; gap: 0; }
       .gallery-grid { columns: 2 200px; }
       .badges { gap: 0.6rem; }
@@ -907,7 +804,7 @@
     }
 
     @media (max-width: 480px) {
-      .hero-ctas { flex-direction: column; align-items: center; }
+      .bi-ctas { flex-direction: column; align-items: center; }
       .btn-gold, .btn-outline { width: 280px; text-align: center; }
       .gallery-grid { columns: 1; }
       .section-pad { padding: 5rem 1.5rem; }
@@ -954,59 +851,27 @@
     <video id="hero-video" autoplay muted loop playsinline>
       <source src="hero.mp4" type="video/mp4">
     </video>
-    <div class="hero-overlay"></div>
+  </section>
 
-    <div class="hero-content">
-      <h1 class="hero-h1">El arte del corte,<br>elevado a experiencia</h1>
-      <p class="hero-sub">25 años de maestría al servicio de los eventos más exclusivos</p>
-      <div class="hero-ctas">
-        <a href="#contacto" class="btn-gold">Solicita Presupuesto</a>
-        <a href="#servicios" class="btn-outline">Ver Servicios</a>
+  <!-- ====== BRAND INTRO ====== -->
+  <section id="brand-intro">
+    <div class="bi-inner">
+      <div class="bi-logo reveal">
+        <img src="logo.png" alt="Jamonterapia">
+      </div>
+      <div class="bi-content reveal d1">
+        <h2 class="bi-h1">El arte del corte, elevado a experiencia</h2>
+        <p class="bi-sub">25 años de maestría al servicio de los eventos más exclusivos</p>
+        <div class="bi-ctas">
+          <a href="#contacto" class="btn-gold">Solicita Presupuesto</a>
+          <a href="#servicios" class="btn-outline">Ver Servicios</a>
+        </div>
       </div>
     </div>
-
-    <div class="scroll-ind">
-      <div class="chev"></div>
-      <div class="chev"></div>
-      <div class="chev"></div>
-    </div>
-
-    <div class="marquee-bar">
+    <div class="marquee-strip">
       <div class="marquee-track">
         <span class="marquee-chunk">&nbsp;&nbsp;✦ Camp Nou · FC Barcelona &nbsp;&nbsp;&nbsp; ✦ Mobile World Congress &nbsp;&nbsp;&nbsp; ✦ PortAventura &nbsp;&nbsp;&nbsp; ✦ Torneos de Golf Mercedes &nbsp;&nbsp;&nbsp; ✦ Ferias Gastronómicas de Élite &nbsp;&nbsp;&nbsp;</span>
         <span class="marquee-chunk">&nbsp;&nbsp;✦ Camp Nou · FC Barcelona &nbsp;&nbsp;&nbsp; ✦ Mobile World Congress &nbsp;&nbsp;&nbsp; ✦ PortAventura &nbsp;&nbsp;&nbsp; ✦ Torneos de Golf Mercedes &nbsp;&nbsp;&nbsp; ✦ Ferias Gastronómicas de Élite &nbsp;&nbsp;&nbsp;</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====== INTRO — LOGO SECTION ====== -->
-  <section id="intro">
-    <div class="intro-wrap">
-      <img id="intro-logo" src="logo.png" alt="Jamonterapia — El Arte del Corte">
-      <div class="ornament" id="intro-orn" style="opacity:0;transition:opacity 1.2s ease-out 0.6s">
-        <span>✦</span>
-      </div>
-      <p id="intro-tag">El arte del corte, elevado a experiencia</p>
-    </div>
-  </section>
-
-  <!-- ====== SECTION 2 — PROPUESTA DE VALOR ====== -->
-  <section id="propuesta">
-    <div class="prop-grid">
-      <div class="prop-item reveal">
-        <span class="prop-sym">✦</span>
-        <h3 class="prop-title">Maestría</h3>
-        <p class="prop-desc">25 años perfeccionando cada corte hasta la excelencia</p>
-      </div>
-      <div class="prop-item reveal d1">
-        <span class="prop-sym">✦</span>
-        <h3 class="prop-title">Exclusividad</h3>
-        <p class="prop-desc">Presente en los eventos más selectos de España</p>
-      </div>
-      <div class="prop-item reveal d2">
-        <span class="prop-sym">✦</span>
-        <h3 class="prop-title">Experiencia Sensorial</h3>
-        <p class="prop-desc">Cada loncha, una obra de arte para el paladar</p>
       </div>
     </div>
   </section>
@@ -1015,7 +880,7 @@
   <section id="maestro">
     <div class="maestro-inner">
       <div class="maestro-img-frame reveal">
-        <img src="1.jpeg" alt="El Maestro Cortador — Jamonterapia" loading="lazy">
+        <img src="4.jpeg" alt="El Maestro Cortador — Jamonterapia" loading="lazy">
       </div>
       <div class="maestro-text reveal d1">
         <h2>El Maestro Cortador</h2>
@@ -1040,32 +905,61 @@
   </section>
 
   <!-- ====== SECTION 4 — SERVICIOS ====== -->
-  <section id="servicios" class="section-pad">
-    <div class="inner">
+  <section id="servicios">
+    <div class="inner" style="padding-top:8rem">
       <h2 class="sec-title reveal">Nuestros Servicios</h2>
       <div class="ornament reveal d1"><span>✦</span></div>
-      <div class="srv-grid">
-        <div class="srv-card reveal">
-          <span class="srv-sym">✦</span>
+    </div>
+    <div class="srv-rows">
+
+      <div class="srv-row reveal">
+        <div class="srv-video-wrap">
+          <video autoplay muted loop playsinline>
+            <source src="video%20suelto%201%20sin%20audio%20.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="srv-info">
           <h3 class="srv-title">Eventos Privados</h3>
           <p class="srv-desc">Bodas, celebraciones y reuniones exclusivas con el sello de calidad Jamonterapia</p>
         </div>
-        <div class="srv-card reveal d1">
-          <span class="srv-sym">✦</span>
+      </div>
+
+      <div class="srv-row reveal">
+        <div class="srv-video-wrap">
+          <video autoplay muted loop playsinline>
+            <source src="video%20suelto%202%20sin%20audio%20.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="srv-info">
           <h3 class="srv-title">Eventos Corporativos</h3>
           <p class="srv-desc">Palcos VIP, presentaciones de empresa y eventos de networking al más alto nivel</p>
         </div>
-        <div class="srv-card reveal d2">
-          <span class="srv-sym">✦</span>
+      </div>
+
+      <div class="srv-row reveal">
+        <div class="srv-video-wrap">
+          <video autoplay muted loop playsinline>
+            <source src="video%20suelto%203.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="srv-info">
           <h3 class="srv-title">Catas &amp; Experiencias</h3>
           <p class="srv-desc">Una inmersión sensorial en el mundo del jamón ibérico de bellota</p>
         </div>
-        <div class="srv-card reveal d3">
-          <span class="srv-sym">✦</span>
+      </div>
+
+      <div class="srv-row reveal">
+        <div class="srv-video-wrap">
+          <video autoplay muted loop playsinline>
+            <source src="video%20suelto%201%20sin%20audio%20.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="srv-info">
           <h3 class="srv-title">Formación en Corte</h3>
           <p class="srv-desc">Aprende la técnica de un maestro con 25 años de experiencia</p>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -1278,22 +1172,6 @@
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
-
-    /* ===== INTRO LOGO ANIMATION ===== */
-    const introLogo = document.getElementById('intro-logo');
-    const introTag  = document.getElementById('intro-tag');
-    const introOrn  = document.getElementById('intro-orn');
-
-    const introObs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          introLogo.classList.add('in');
-          introTag.classList.add('in');
-          introOrn.style.opacity = '1';
-        }
-      });
-    }, { threshold: 0.3 });
-    introObs.observe(introLogo);
 
     /* ===== STAT COUNTERS ===== */
     const statEls = document.querySelectorAll('.stat-num[data-target]');
